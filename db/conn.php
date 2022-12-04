@@ -13,6 +13,7 @@ spl_autoload_register(function($class){
     }
     
 });
+
     $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 
     try {

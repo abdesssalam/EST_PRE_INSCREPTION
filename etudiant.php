@@ -1,8 +1,11 @@
 <?php 
 include_once 'includes/session.php';
 include_once ('db/conn.php');
-include_once 'controller/EtudiantController.php'; 
- 
+include_once 'controller/EtudiantController.php';
+
+$current =getdate()['year'];
+$next = $current + 1;
+
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,45 +47,49 @@ include_once 'controller/EtudiantController.php';
         <div class="flex flex-wrap  w-full  md:justify-start lg:justify-center items-start ">
             <div class="md:w-1/4 w-full  flex items-center m-2 ">
                 <label for="CNE" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">CNE ou Code Massar :</label>
-                <input type="text" name="CNE" id="CNE" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="F13257780" required>
+                <input type="text" value="<?php echo isset($rowEtudian['CNE']) ? $rowEtudian['CNE'] : '' ?>" name="CNE" id="CNE" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="F13257780" required>
             </div>
             <div class="md:w-1/4 w-full  flex items-center m-2 ">
                 <label for="CIN" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">CIN :</label>
-                <input type="text" name="CIN" id="CIN" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="DJ8877" required>
+                <input type="text" name="CIN"  value="<?php echo isset($rowEtudian['CIN']) ? $rowEtudian['CIN'] : '' ?>" id="CIN" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="DJ8877" required>
             </div>
            <div class="md:w-1/4 w-full  flex items-center m-2  ">
-                <label for="ville" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">Payee :</label>
-                <select id="ville" name="payee" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
-                    <option selected>choisez votre Payee</option>
-                    <option value="maroc">Maroc</option>
-                    <option value="mali">Mali</option>
-                    <option value="sinigla">Sinigal</option>
-                    <option value="Negeria">Negeria</option>
+                <label for="region" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">Payee :</label>
+                <!-- TODO:  traitemnet for dynamique -->
+                <select id="region-etd"  name="region"  value="<?php echo isset($rowEtudian['region']) ? $rowEtudian['region'] : '' ?>" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
+                     <option >choisez votre region</option>
+                    <?php foreach($regions as $region): ?>
+                        <?php if(isset($rowEtudian['region']) && $rowEtudian['region']==$region['id'] ): ?>
+                            <option selected value="<?php echo $region['id'];?>"><?php echo $region['region'];?></option>
+                            <?php else:?> 
+                                <option value="<?php echo $region['id'];?>"><?php echo $region['region'];?></option>
+                            <?php endif; ?>
+                       
+                    <?php endforeach;?>
                 </select>
             </div>
            <div class="md:w-1/4 w-full  flex items-center m-2  ">
                 <label for="ville" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">Ville :</label>
-                <select id="ville" name="ville" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
+                <select id="ville-etd" name="ville"   class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
                     <option selected>choisez votre ville</option>
-                    <option value="SAFI">SAFI</option>
-                    <option value="MARRAKECH">MARRAKECH</option>
-                    <option value="ESSAOUIRA">ESSAOUIRA</option>
-                    <option value="AGADIR">AGADIR</option>
+                    <?php foreach($villes as $ville): ?>
+                        <?php if(isset($rowEtudian['ville']) && $ville['id']==$rowEtudian['ville']): ?>
+                            <option selected value="<?php echo $ville['id'];?>"><?php echo $ville['ville'];?></option>
+                        <?php else:?>
+                            <option  value="<?php echo $ville['id'];?>"><?php echo $ville['ville'];?></option>
+                        <?php endif;?>    
+                    <?php endforeach;?>
+
                 </select>
             </div>
             
             <div class="md:w-1/4 w-full  flex items-center m-2  ">
-                <label for="ville" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 ">Nationalité :</label>
-                <select id="ville" name="nationalite" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
-                    <option selected>choisez votre nationalité</option>
-                    <option value="maroccain">maroccain</option>
-                    <option value="malaoui">malaoui</option>
-                   
-                </select>
+            <label for="codePostal" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 ">Code Postal :</label>
+                <input type="number" name="codePostal"  value="<?php echo isset($rowEtudian['codePostal']) ? $rowEtudian['codePostal'] : '' ?>" id="codePostal" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="50000" required>
             </div>
             <div class="md:w-1/4 w-full  flex items-center m-2 ">
                 <label for="telephone" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 ">telephone :</label>
-                <input type="phone" name="telephone" id="telephone" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="+212XXXXXXX" required>
+                <input type="phone" name="telephone"  value="<?php echo isset($rowEtudian['telephone']) ? $rowEtudian['telephone'] : '' ?>" id="telephone" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="+212XXXXXXX" required>
             </div>
             
         </div>
@@ -97,45 +104,55 @@ include_once 'controller/EtudiantController.php';
                 
                 <div class="md:w-1/4 w-full  flex items-center m-2  ">
                     <label for="typeBac" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">Type de Bac :</label>
-                    <select id="typeBac" name="type_bac" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
-                        <option selected>choisez votre type de Bac</option>
-                        <option value="1">Sc.Math</option>
-                        <option value="2">Sc.Physique</option>
-                        <option value="3">Sc.SVT</option>
-                        <option value="4">Electrique</option>
-                        <option value="5">Mecanique</option>
+                    <select id="typeBac" name="type_bac"  value="<?php echo isset($rowEtudian['CNE']) ? $rowEtudian['CNE'] : '' ?>" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
+                        <option>choisez votre type de Bac</option>
+                        <!-- TODO : dynamique -->
+                        <?php foreach($typebac as $tbac): ?>
+                            <?php if(isset($rowEtudian['type']) && $rowEtudian['type']==$tbac['IDType'] ): ?>
+                                <option selected value="<?php echo $tbac['IDType'];?>"><?php echo $tbac['initiule'];?></option>
+                            <?php else:?>
+                                <option value="<?php echo $tbac['IDType'];?>"><?php echo $tbac['initiule'];?></option>
+                            <?php endif; ?>
+                       
+                    <?php endforeach;?>
                     </select>
                 </div>
                 <div class="md:w-1/4 w-full  flex items-center m-2  ">
                     <label for="RegBac" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">Region de Bac :</label>
-                    <select id="RegBac" name="region_bac" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
+                    <select id="RegBac" name="region_bac"  value="<?php echo isset($rowEtudian['CNE']) ? $rowEtudian['CNE'] : '' ?>" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
                         <option selected>choisez Region de Bac</option>
-                        <option value="MARRAKECH SAFI">MARRAKECH SAFI</option>
-                        <option value="CASA SETTAT">CASA SETTAT</option>
-                        <option value="BENI MELLAL KHNIFRA">BENI MELLAL KHNIFRA</option>
-                        <option value="FES MEKNES">FES MEKNES</option>
+                        <?php foreach($regions as $region): ?>
+                            <?php if(isset($rowEtudian['RegBac']) && $rowEtudian['RegBac']==$region['id'] ): ?>
+                                <option selected value="<?php echo $region['id'];?>"><?php echo $region['region'];?></option>
+                            <?php else:?>
+                                <option value="<?php echo $region['id'];?>"><?php echo $region['region'];?></option>
+                            <?php endif; ?>
+                            
+                        <?php endforeach;?>
                     </select>
                 </div>
                 <div class="md:w-1/4 w-full  flex items-center m-2  ">
                     <label for="AnneeBac" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">Annee de Bac :</label>
-                    <select id="AnneeBac" name="annee_bac" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
-                        <option selected>choisez l'annee de Bac</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
+                    <select id="AnneeBac" name="annee_bac"  value="" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
+                        <option >choisez l'annee de Bac</option>
+                        
+                        <option value="<?php echo $current ?>"><?php echo $current ?></option>
+                        <option value="<?php echo $next ?>"><?php echo $next ?></option>
+                        
                         
                     </select>
                 </div>
                 <div class="md:w-1/4 w-full  flex items-center m-2 ">
                     <label for="national" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">moyenne de l'examen national :</label>
-                    <input type="number" step="0.01" min="0" max="20" name="national" id="national" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="+212XXXXXXX" required>
+                    <input type="number"  value="<?php echo isset($rowEtudian['NoteNational']) ? $rowEtudian['NoteNational'] : '' ?>" step="0.01" min="0" max="20" name="national" id="national" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="XX.XX" required>
                 </div>
                 <div     class="md:w-1/4 w-full  flex items-center m-2 ">
                     <label for="regional" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">moyenne de l'examen regional :</label>
-                    <input type="number" step="0.01" min="0" max="20" name="regional" id="regional" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="+212XXXXXXX" required>
+                    <input type="number"  value="<?php echo isset($rowEtudian['NoteRegional']) ? $rowEtudian['NoteRegional'] : '' ?>" step="0.01" min="0" max="20" name="regional" id="regional" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="XX.XX" required>
                 </div>
                 <div class="md:w-1/4 w-full  flex items-center m-2 ">
                     <label for="cc" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">moyenne des controls continue :</label>
-                    <input type="number" step="0.01" min="0" max="20" name="cc" id="cc" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="+212XXXXXXX" required>
+                    <input type="number"   value="<?php echo isset($rowEtudian['moycc']) ? $rowEtudian['moycc'] : '' ?>" step="0.01" min="0" max="20" name="CC" id="cc" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="XX.XX" required>
                 </div>
         </div>
       
@@ -164,31 +181,39 @@ include_once 'controller/EtudiantController.php';
                 <div class="md:w-1/4 w-full  flex items-center m-2  ">
                     <label for="choix1" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">choix 2:</label>
                     <select id="choix1" name="choix1" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
-                        <option selected>liste des choix</option>
-                        <option value="1">Ginie informatique</option>
-                        <option value="2">Technique de management</option>
-                       
+                        <option>liste des choix</option>
+                        <?php foreach($feliers as $fl): 
+                             if(isset($etd_choix[0])){
+                                if($etd_choix[0]['IDFelier']==$fl['IDFelier']){
+                                    echo '<option selected value="' . $fl['IDFelier'] . '">'.$fl['filier'].'</option>';
+                                }else{
+                                    echo '<option  value="' . $fl['IDFelier'] . '">'.$fl['filier'].'</option>';
+                                }
+                            }else{
+                                echo '<option  value="' . $fl['IDFelier'] . '">'.$fl['filier'].'</option>';
+                            } 
+                            endforeach;?>
                     </select>
                 </div>
                 <div class="md:w-1/4 w-full  flex items-center m-2  ">
                     <label for="choix2" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">choix 1:</label>
                     <select id="choix2" name="choix2" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
-                        <option selected>liste des choix</option>
-                        <option value="1">Ginie informatique</option>
-                        <option value="2">Technique de management</option>
+                        <option >liste des choix</option>
+                        <?php foreach($feliers as $fl): 
+                             if(isset($etd_choix[1])){
+                                if($etd_choix[1]['IDFelier']==$fl['IDFelier']){
+                                    echo '<option selected value="' . $fl['IDFelier'] . '">'.$fl['filier'].'</option>';
+                                }else{
+                                    echo '<option  value="' . $fl['IDFelier'] . '">'.$fl['filier'].'</option>';
+                                }
+                            }else{
+                                echo '<option  value="' . $fl['IDFelier'] . '">'.$fl['filier'].'</option>';
+                            } 
+                            endforeach;?>
                         
                     </select>
                 </div>
-                <!-- <div class="md:w-1/4 w-full  flex items-center m-2  ">
-                    <label for="choix3" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">3 choix :</label>
-                    <select id="choix3" name="choix3" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
-                        <option selected>liste des choix</option>
-                        <option value="US">United States</option>
-                        <option value="CA">Canada</option>
-                        <option value="FR">France</option>
-                        <option value="DE">Germany</option>
-                    </select>
-                </div> -->
+                
                 
         </div>
         <div class="flex flex-wrap  w-full md:justify-start lg:justify-center items-start ">
@@ -197,3 +222,4 @@ include_once 'controller/EtudiantController.php';
 </form>
 
 </div>
+<?php require_once 'includes/footer.php' ?>

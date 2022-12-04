@@ -7,22 +7,27 @@
         function __construct($conn){
             $this->db = $conn;
         }
-
+        function clean_input($data) {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+          }
         
         public function add($data,$ID){
             try{
                 // begin transact
                 $this->db->beginTransaction();
 
-                $sql="INSERT INTO etudiant(IDEtudiant,CNE,CIN,ville,telephone,nationalite,payee) values(:ID,:CNE,:CIN,:V,:T,:N,:P)";
+                $sql="INSERT INTO etudiant(IDEtudiant,CNE,CIN,ville,telephone,codePostal) values(:ID,:CNE,:CIN,:V,:T,:N)";
                 $stmt=$this->db->prepare($sql);
                 $stmt->bindParam(':ID',$ID,PDO::PARAM_INT);
                 $stmt->bindParam(':CNE',$data['CNE'],PDO::PARAM_STR);
                 $stmt->bindParam(':CIN',$data['CIN'],PDO::PARAM_STR);
-                $stmt->bindParam(':V',$data['ville'],PDO::PARAM_STR);
+                $stmt->bindParam(':V',$data['ville'],PDO::PARAM_INT);
                 $stmt->bindParam(':T',$data['telephone'],PDO::PARAM_STR);
-                $stmt->bindParam(':N',$data['nationalite'],PDO::PARAM_STR);
-                $stmt->bindParam(':P',$data['payee'],PDO::PARAM_STR);
+                $stmt->bindParam(':N',$data['codePostal'],PDO::PARAM_STR);
+                
                 $stmt->execute();
 
                 $sql="INSERT INTO bac(IDEtudiant,annee,region,NoteNational,NoteRegional,type,moycc) values(:ID,:A,:R,:NN,:NR,:T,:CC)";
@@ -37,12 +42,12 @@
                 $stmt->execute();
 
 
-                $sql="INSERT INTO insception(IDEtidiant,IDFelier) values (:ID,:F)";
+                $sql="INSERT INTO insception(IDEtidiant,IDFelier,choix) values (:ID,:F,1)";
                 $stmt=$this->db->prepare($sql);
                 $stmt->bindParam(':ID',$ID,PDO::PARAM_INT);
                 $stmt->bindParam(':F',$data['choix1'],PDO::PARAM_INT);
                 $stmt->execute();
-                $sql="INSERT INTO insception(IDEtidiant,IDFelier) values (:ID,:F)";
+                $sql="INSERT INTO insception(IDEtidiant,IDFelier,choix) values (:ID,:F,2)";
                 $stmt=$this->db->prepare($sql);
                 $stmt->bindParam(':ID',$ID,PDO::PARAM_INT);
                 $stmt->bindParam(':F',$data['choix2'],PDO::PARAM_INT);
@@ -75,9 +80,77 @@
             }
         }
 
+        public function editInscreption($ID,$data){
+            try{
+                $this->db->beginTransaction();
+                //table : etudiant
+                $sql = "UPDATE etudiant SET CNE=:CNE,CIN=:CIN,telephone=:T,ville=:V,codePostal=:N WHERE IDEtudiant=:ID";
+                $stmt=$this->db->prepare($sql);
+                $stmt->bindParam(':ID',$ID,PDO::PARAM_INT);
+                $stmt->bindParam(':CNE',$data['CNE'],PDO::PARAM_STR);
+                $stmt->bindParam(':CIN',$data['CIN'],PDO::PARAM_STR);
+                $stmt->bindParam(':V',$data['ville'],PDO::PARAM_INT);
+                $stmt->bindParam(':T',$data['telephone'],PDO::PARAM_STR);
+                $stmt->bindParam(':N',$data['codePostal'],PDO::PARAM_STR);
+                $stmt->execute();
+
+                //table : bac
+                $sql = "UPDATE bac SET annee=:A,NoteNational=:NN,NoteRegional=:NR,type=:T,moycc=:CC,region=:R WHERE IDEtudiant=:ID";
+                $stmt=$this->db->prepare($sql);
+                $stmt->bindParam(':ID',$ID,PDO::PARAM_INT);
+                $stmt->bindParam(':T',$data['type_bac'],PDO::PARAM_INT);
+                $stmt->bindParam(':A',$data['annee_bac'],PDO::PARAM_STR);
+                $stmt->bindParam(':R',$data['region_bac'],PDO::PARAM_STR);
+                $stmt->bindParam(':NN',$data['national'],PDO::PARAM_STR);
+                $stmt->bindParam(':NR',$data['regional'],PDO::PARAM_STR);
+                $stmt->bindParam(':CC',$data['CC'],PDO::PARAM_STR);
+                $stmt->execute();
+               
+                //les choix
+                $etd_choix = $this->showChoix($_SESSION['ID']);
+                if($etd_choix[0]['IDFelier']!=$data['choix1']){
+                    if($etd_choix[1]['IDFelier']==$data['choix2'] && $data['choix1']==$data['choix12']){
+                        echo "les choix doit être different";
+                        $this->db->rollBack();
+
+                    }else{
+                        $sql = " UPDATE insception set IDFelier=:F where IDEtidiant=:ID and choix=1";
+                        $stmt=$this->db->prepare($sql);
+                        $stmt->bindParam(':ID',$ID,PDO::PARAM_INT);
+                        $stmt->bindParam(':F',$data['choix1'],PDO::PARAM_INT);
+                        $stmt->execute();   
+                    }
+                    
+                }
+                if($etd_choix[1]['IDFelier']!=$data['choix2']){
+                    if($etd_choix[0]['IDFelier']==$data['choix1'] && $data['choix1']==$data['choix12']){
+                        echo "les choix doit être different";
+                        $this->db->rollBack();
+
+                    }else{
+                        $sql = " UPDATE insception set IDFelier=:F where IDEtidiant=:ID and choix=1";
+                        $stmt=$this->db->prepare($sql);
+                        $stmt->bindParam(':ID',$ID,PDO::PARAM_INT);
+                        $stmt->bindParam(':F',$data['choix2'],PDO::PARAM_INT);
+                        $stmt->execute();
+                    }
+                    
+                }
+                
+                $this->db->commit();
+                return true;
+            }catch (PDOException $e) {
+                $this->db->rollBack();
+                echo $e->getMessage();
+                echo $e->getLine();
+                return false;
+            }
+            
+        }
+
         public function show($id){
             try{
-            $sql = "SELECT UT.nom,UT.prenom,ED.CNE,ED.CIN,ED.ville,ED.telephone,ED.nationalite,ED.payee FROM `utilisateur` as UT JOIN etudiant as ED on UT.idUser=ED.IDEtudiant JOIN insception as INS on INS.IDEtidiant=ED.IDEtudiant where INS.IDEtidiant =:ID";
+            $sql = "SELECT UT.nom,UT.prenom,ED.CNE,ED.CIN,ED.ville,ED.telephone,ED.nationalite,ED.payee FROM utilisateur as UT JOIN etudiant as ED on UT.idUser=ED.IDEtudiant JOIN insception as INS on INS.IDEtidiant=ED.IDEtudiant where INS.IDEtidiant =:ID";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(":ID", $id);
             $stmt->execute();
@@ -94,11 +167,10 @@
             try{
             $sql = "SELECT COUNT(*) as NBR from etudiant WHERE IDEtudiant=:ID";
                 $stmt = $this->db->prepare($sql);
-                $stmt->bindparam(":ID", $id);
+                $stmt->bindparam(":ID", $id,PDO::PARAM_INT);
                 $stmt->execute();
                 return  $stmt->fetch();
             }catch (PDOException $e) {
-                $this->db->rollBack();
                 echo $e->getMessage();
                 echo $e->getLine();
                 return false;
@@ -120,6 +192,22 @@
             }
         }
 
+        public function showChoix($ID){
+            try{
+                $sql = "SELECT IDEtidiant,IDFelier,choix FROM insception WHERE IDEtidiant=:ID";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindparam(":ID", $ID,PDO::PARAM_INT);
+                $stmt->execute();
+                return  $stmt->fetchAll();
+
+            }catch (PDOException $e) {
+                
+                echo $e->getMessage();
+                echo $e->getLine();
+                return false;
+            }
+        }
+
         
        
         
@@ -131,7 +219,7 @@
           
             $check = getimagesize($_FILES[$file]["tmp_name"]);
             if($check!==false) {
-                echo "File is an image - " . $check["mime"] . ".";
+                // echo "File is an image - " . $check["mime"] . ".";
                 $uploadOk = 1;
             } else {
                 echo "File is not an image.";
@@ -153,7 +241,7 @@
                 // if everything is ok, try to upload file
             }else {
                 if (move_uploaded_file($_FILES[$file]["tmp_name"], $target_file)) {
-                    echo "ok";
+                    // echo "ok";
                     return true;
                 } else {
                     echo "Sorry, there was an error uploading your file.";
@@ -162,6 +250,27 @@
         
             }
         }
+
+
+        //show etudiant info
+        public function showEtudiant($id){
+            try{
+                $sql = "SELECT CNE,CIN,telephone,codePostal ,v.id as ville,v.region,b.annee ,b.region as RegBac, b.NoteNational,b.NoteRegional,b.moycc,b.type FROM etudiant as ed JOIN ville as v on ed.ville=v.id JOIN bac as b on b.IDEtudiant=ed.IDEtudiant WHERE ed.IDEtudiant=:ID";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindParam(":ID", $id, PDO::PARAM_INT);
+                $stmt->execute();
+                return $stmt->fetch();
+                
+            }catch (PDOException $e) {
+                
+                echo $e->getMessage();
+                echo $e->getLine();
+                return false;
+                
+            }
+        }
+
+       
 
         
         

@@ -12,7 +12,7 @@ class HomeInfo{
     //get all villes
     public function getVilles(){
         try{
-            $sql = "select id,ville from ville";
+            $sql = "select id,UPPER(ville) as ville from ville order by ville";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll();
@@ -43,7 +43,7 @@ class HomeInfo{
     //get all Regions
     public function getRegions(){
         try{
-            $sql = "select id,region from region";
+            $sql = "select id,region from region order by region";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll();
@@ -70,6 +70,23 @@ class HomeInfo{
             return false;
         }
     }
+
+   public function filtredFiliers($id){
+    try{
+            $sql = "select IDFelier,intitilue from felier where IDFelier!=:ID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":ID",$id,PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            return $result;
+    }catch (PDOException $e) {
+            echo $e->getMessage();
+            echo $e->getLine();
+            return false;
+        }
+   }
+
+    
 
 
 
