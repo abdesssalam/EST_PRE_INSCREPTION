@@ -70,6 +70,22 @@ class HomeInfo{
             return false;
         }
     }
+    public function getTypeBacFiltred($ID){
+        try{
+            $sql = "select IDType,initiule from typebac WHERE IDType not in(SELECT IDType FROM filiertypebac WHERE IDFelier=:ID)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':ID',$ID,PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            return $result;
+
+        }catch (PDOException $e) {
+            echo $e->getMessage();
+            echo $e->getLine();
+            return false;
+        }
+    }
+    
 
    public function filtredFiliers($id){
     try{

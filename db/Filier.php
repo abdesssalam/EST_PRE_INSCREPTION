@@ -83,5 +83,31 @@ class Filier{
         }
     }
 
+    public function add_filier_bac($data){
+        try{
+            $sql = "INSERT INTO filiertypebac(IDFelier,IDType,nb) VALUES(:F,:T,:N)";
+            $stmt=$this->db->prepare($sql);
+            $stmt->bindParam(":F", $data['filier'], PDO::PARAM_INT);
+            $stmt->bindParam(":T", $data['type'], PDO::PARAM_INT);
+            $stmt->bindParam(":N", $data['NB'], PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        }catch(PDOException $e){
+            echo $e->getMessage() . '--- line :' . $e->getLine();
+        }
+    }
+
+    public function get_filiersBac($filier){
+        try{
+        $sql = "select ft.IDFelier,tb.IDType,tb.initiule as bac,nb ,fl.intitilue as filier FROM filiertypebac as ft JOIN typebac  as tb on tb.IDType=ft.IDType join felier fl on fl.IDFelier=ft.IDFelier where ft.IDFelier=:ID";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":ID", $filier, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        }catch(PDOException $e){
+            echo $e->getMessage() . '--- line :' . $e->getLine();
+        }
+    }
+
 
 }
