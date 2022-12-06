@@ -6,7 +6,7 @@ $rows = $inscreption->all();
 <!-- conent -->
    <div class="w-11/12 mx-auto py-2">
       <h3 class="text-center font-bold text-xl capitalize">liste des inscriptions</h3>
-      <div class="overflow-x-auto relative mt-4">
+      <div class="overflow-x-auto  overflow-y-scroll relative mt-4" style="height: 450px ;">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>

@@ -15,4 +15,8 @@ if(isset($_GET['bac_filier'])){
     echo json_encode($felier->get_filiersBac($_GET['bac_filier']));
 }
 
+if(isset($_GET['list_pr_filier'])){
+   
+    echo json_encode($phase->get_list_principale($_GET['list_pr_filier']));
+}
 ?>
