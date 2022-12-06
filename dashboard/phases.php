@@ -21,22 +21,17 @@ $filiers = $felier->getAllFiliers();
             </select>
         </div>
         <div class="my-2 flex content-around ">
-            <label class="font-medium text-lg capitalize  w-1/3" for="departement">les feliers de bac</label>
-            <select id="departement" name="departement" class="w-2/3 bg-white border border-white text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
-               <option selected>liste des choix</option>
-               <?php foreach($types_bac as $tb): ?>
-               <option value="<?php echo $tb['IDType'] ?>">
-                  <?php echo $tb['initiule'] ?>   
-               </option>
-                <?php endforeach; ?>      
+            <label class="font-medium text-lg capitalize  w-1/3" for="departement">choisir la liste</label>
+            <select id="liste" name="liste" class="w-2/3 bg-white border border-white text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
+               
+               <option value="principale">Principale</option>
+               <option value="attend">Attend</option>
+                    
             </select>
         </div>
-        <div class="my-2 flex content-around ">
-        <label class="font-medium text-lg  capitalize w-1/3" for="NB_MAX">Nombre Max</label>
-         <input class="p-1 rounded-sm w-2/3" type="number" name="NB_MAX">
-        </div>
+        
         <div class="w-9 mx-auto">
-            <input class="text-white bg-green-500 py-2 px-3 font-semibold my-2 cursor-pointer rounded-md uppercase hover:text-gray-600" type="submit" value="ajouter">
+            <input class="text-white bg-green-500 py-2 px-3 font-semibold my-2 cursor-pointer rounded-md uppercase hover:text-gray-600" type="submit" value="imprimer">
          </div>
     </form>
  

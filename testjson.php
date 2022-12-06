@@ -3,20 +3,9 @@
 
 $result = array(
     array("oldID" => "1","oldMain"=>"test"),
-    array("oldID" => "2","oldMain"=>"test"),
-    array("oldID" => "3","oldMain"=>"test")
+    array("oldID" => "2","oldMain"=>"test2")
 );
-  
 
-
-  $data = [];
-    foreach ($result as $res) {
-            $t = [];
-            $t['oldID'] = $res['oldID'];
-            $t['oldMain'] = $res['oldMain'];
-            $data[] = $t;
-        }
-        echo json_encode(['data' => $data]);
-?>
-
+$result[2] = array("oldID" => "3", "oldMain" => "test2");
+var_dump($result);
 

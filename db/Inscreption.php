@@ -53,7 +53,7 @@
                 $stmt->bindParam(':F',$data['choix2'],PDO::PARAM_INT);
                 $stmt->execute();
                 // commit transact
-               
+                /*
                     if($this->addFile('File_R','regional',$data['CNE'])==false){
                         $this->db->rollBack();
                         return false;
@@ -67,7 +67,7 @@
                         return false;
                     }
                     
-                
+                */
                 $this->db->commit();
                 return true;
             
@@ -216,7 +216,13 @@
             $target_file = $target_dir .$name.'__'.basename($_FILES[$file]["name"]);
             $uploadOk = 1;
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-          
+            if(!file_exists($_FILES[$file]['tmp_name']) || !is_uploaded_file($_FILES[$file]['tmp_name'])) {
+                echo '<div class="p-4 mb-4 text-sm text-center text-red-700 bg-red-100  dark:bg-red-200 dark:text-red-800" role="alert">
+                <span class="font-medium">charger les fichies S.V.P!</span> 
+              </div>';
+                //error file
+                return false;
+            }
             $check = getimagesize($_FILES[$file]["tmp_name"]);
             if($check!==false) {
                 // echo "File is an image - " . $check["mime"] . ".";
