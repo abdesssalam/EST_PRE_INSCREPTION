@@ -39,6 +39,14 @@ $next = $current + 1;
         </div>
     </nav>
 </header>
+<?php
+$today = date("Y-m-d");
+if($home_info->get_setting_value('date_limit_inscrp')<$today):
+  echo '<div class="p-4 mb-4 text-sm text-yellow-500 text-center bg-yellow-200 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+  <span class="font-medium">les inscreptions sont fermer!</span> 
+</div>';
+else:
+?>
 <div class="container mx-auto mt-5 py-3 ">
 
     <form class="w-full  mx-auto " enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" >
@@ -219,8 +227,9 @@ $next = $current + 1;
         <div class="flex flex-wrap  w-full md:justify-start lg:justify-center items-start ">
         
         <?php
-        $rowEtudian['nbEdit'] = 2;
+        
         if(isset($rowEtudian['nbEdit'])){
+            $nb = $home_info->get_setting_value('limit_edit');
             if($rowEtudian['nbEdit']<2){
                 
                 echo '<button type="submit" class="text-white md:w-1/3 w-full my-3 uppercase mx-auto bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   ">modifier</button>'; 
@@ -237,4 +246,7 @@ $next = $current + 1;
 </form>
 
 </div>
-<?php require_once 'includes/footer.php' ?>
+
+<?php
+endif;
+require_once 'includes/footer.php'; ?>

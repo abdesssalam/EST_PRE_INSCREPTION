@@ -28,7 +28,11 @@ if(isset($_SESSION['ID'])){
         }
         
     }
+}else{
+    header("location:login.php");
 }
+
+
 $villes = $home_info->getVilles();
 $regions = $home_info->getRegions();
 $typebac = $home_info->getTypeBac();
@@ -36,9 +40,6 @@ $feliers = $felier->getAllFiliers();
 
 
 
-// else{
-//     header("location:login.php");
-// }
 
 /*
     TODO: add etudiant info to db

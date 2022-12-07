@@ -117,6 +117,54 @@ class HomeInfo{
        
    }
 
+   public function get_settings(){
+    try{
+        $sql = "SELECT s_key,label,type,val from settings";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        return $result; 
+    }catch (PDOException $e) {
+        echo $e->getMessage();
+        echo $e->getLine();
+        return false;
+    }
+   }
+
+   public function get_setting_value($key){
+    try{
+        $sql = "SELECT val from settings where s_key=:k";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":k", $key, PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result; 
+    }catch (PDOException $e) {
+        echo $e->getMessage();
+        echo $e->getLine();
+        return false;
+    }
+   }
+
+   public function update_settings($data){
+    try{
+            $settings = $this->get_settings();
+            foreach($settings as $st){
+              $sql = "update settings set val=:v where s_key=:k";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindParam(":v", $data[$st['s_key']],PDO::PARAM_STR);  
+                $stmt->bindParam(":k", $st['s_key'],PDO::PARAM_STR);
+                $stmt->execute();  
+            }
+            return true;
+        
+    }catch (PDOException $e) {
+        echo $e->getMessage();
+        echo $e->getLine();
+        return false;
+    }
+   }
+
     
 
 

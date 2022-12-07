@@ -8,10 +8,10 @@ if(isset($_SESSION['ID'])){
    $data = $auth->getUser($_SESSION['ID']);
     $full_name=$data['prenom'].' '.$data['nom']; 
 }
-/*else{
+else{
     header("location:../login.php");
 }
-*/
+
 
 
 
