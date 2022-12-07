@@ -47,7 +47,11 @@ if(isset($_SESSION['ID'])){
             </div>
             
         </div>
-        <ul class="w-11/12 h-2/4 text-white font-bold text-lg uppercase ">
+        <ul class="w-11/12 h-3/4 text-white font-bold text-lg uppercase ">
+            <li class="flex w-11/12 bg-green-500 py-2 my-1 items-center hover:bg-green-700">
+                <i class="fas fa-user text-3xl mx-3"></i>
+                <a class="w-full" href="/ESTS-INS/dashboard/contacts.php">Gestion contact</a>
+            </li>
             <li class="flex w-11/12 bg-green-500 py-2 my-1 items-center hover:bg-green-700">
                 <i class="fa-solid fa-table-list text-3xl mx-3"></i>
                 <a class="w-full" href="/ESTS-INS/dashboard/inscreptions.php">les inscreption</a>
@@ -69,7 +73,7 @@ if(isset($_SESSION['ID'])){
                 <a class="w-full" href="/ESTS-INS/dashboard/departements.php">les département</a> 
             </li>
         </ul>
-        <div class="w-full  text-white h-1/4 self-end">
+        <div class="w-full  text-white h-1/5 self-end">
             <div class="flex items-center bg-red-500 w-11/12 mx-auto py-2 uppercase">
                 <i class="fa-solid fa-right-to-bracket text-3xl mx-3"></i>
                 <a class="w-full"  href="../logout.php">déconnection</a> 

@@ -16,7 +16,11 @@ if(isset($_GET['bac_filier'])){
 }
 
 if(isset($_GET['list_pr_filier'])){
-   
-    echo json_encode($phase->get_list_principale($_GET['list_pr_filier']));
+    $res = $phase->get_list_principale($_GET['list_pr_filier']);
+    for($i=0;$i<count($res);$i++){
+        unset($res[$i]['IDFelier']);
+        unset($res[$i]['IDEtudiant']);
+    }
+    echo json_encode($res);
 }
 ?>

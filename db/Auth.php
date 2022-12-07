@@ -117,6 +117,18 @@ class Auth{
           }
       }
 
+      public function get_comptes_non_inscrire(){
+        try{
+            $sql = "SELECT idUser,nom,prenom,email,created FROM utilisateur WHERE role=1 and DATEDIFF(CURRENT_DATE(), created)>7 and idUser not in (SELECT IDEtudiant FROM etudiant) ORDER by created ASC ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }catch (PDOException $e) {
+              echo $e->getMessage();
+              return false;
+          }
+      }
+
 
 
 
