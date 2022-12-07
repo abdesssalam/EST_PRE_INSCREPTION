@@ -18,7 +18,7 @@ $listFilier = $felier->getAllFiliers();
 //add filier to database
 if($_SERVER['REQUEST_METHOD']=="POST"){
    if(isset($_POST['action'])){
-      if($felier->editFilier($_GET['edit'],$_POST)){
+      if($felier->editFilier($_POST)){
          echo '<div class="p-4 mb-4 w-2/3 mx-auto text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">
        <span class="font-medium">filier a été bien modifer!</span> 
      </div>';
@@ -87,12 +87,13 @@ if(isset($_GET['edit'])){
          <?php else : ?>
             <input class="p-1 rounded-sm w-2/3" value="<?php echo $inputValues['nbMax'] ?>" type="text" name="NB_MAX">
          <?php endif;?>
-            
+         
            
         </div>
         <div class="w-9 mx-auto">
          <?php if(isset($_GET['edit'])): ?>
             <input type="hidden" name="action" value="edit">
+            <input type="hidden" name="edit" value="<?php echo $_GET['edit'] ?>">
             <input class="text-white bg-green-500 py-2 px-3 font-semibold my-2 cursor-pointer rounded-md uppercase hover:text-gray-600" type="submit" value="modifier">
          <?php else:?>   
             <input class="text-white bg-green-500 py-2 px-3 font-semibold my-2 cursor-pointer rounded-md uppercase hover:text-gray-600" type="submit" value="ajouter">

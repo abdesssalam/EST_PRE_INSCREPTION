@@ -40,6 +40,28 @@ $(document).ready(function(){
 
     $('#phase_filier_DUT').change(function(){
         var filier_dut=$('#phase_filier_DUT').val();
+        var list_selected=$('#liste_selected').val();
+
+        if(list_selected=='attend'){
+            get_list_att(filier_dut);
+        }else{
+            get_list_pr(filier_dut);
+        }
+        
+    })
+    $('#liste_selected').change(function(){
+        var filier_dut=$('#phase_filier_DUT').val();
+        var list_selected=$('#liste_selected').val();
+
+        if(list_selected=='attend'){
+            get_list_att(filier_dut);
+        }else{
+            get_list_pr(filier_dut);
+        }
+        
+    })
+
+    function get_list_pr(filier_dut){
         $.get("/ESTS-INS/json_data.php?list_pr_filier="+filier_dut,function(data,st){
             data=JSON.parse(data);
             
@@ -57,5 +79,24 @@ $(document).ready(function(){
             })
             
         })
-    })
+    }
+    function get_list_att(filier_dut){
+        $.get("/ESTS-INS/json_data.php?list_att_filier="+filier_dut,function(data,st){
+            data=JSON.parse(data);
+            
+            
+            $('#tbody_list_phase').empty();
+            data.forEach(function(dd){
+                var tr='<tr class="bg-white border-b"> <td scope="row" class="py-4 px-2 font-medium text-gray-900 whitespace-nowrap">';
+                tr+=dd.CNE+'</td> <td class="py-4 px-2">';
+                tr+=dd.nom+'</td> <td class="py-4 px-2">';
+                tr+=dd.prenom+'</td> <td class="py-4 px-2">';
+                tr+=dd.bac+'</td> <td class="py-4 px-2">';
+                tr+=dd.felier+'</td> ';
+                $('#tbody_list_phase').append(tr);
+            
+            })
+            
+        })
+    }
 })

@@ -25,7 +25,7 @@ $filiers = $felier->getAllFiliers();
         </div>
         <div class="my-2 flex content-around ">
             <label class="font-medium text-lg capitalize  w-1/3" for="departement">choisir la liste</label>
-            <select id="liste" name="liste" class="w-2/3 bg-white border border-white text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
+            <select id="liste_selected" name="liste" class="w-2/3 bg-white border border-white text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
                
                <option >choisir la liste</option>
                <option value="principale">Principale</option>

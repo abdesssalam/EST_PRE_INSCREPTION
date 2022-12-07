@@ -61,14 +61,14 @@ class Filier{
 
     //update filier
 
-    public function editFilier($id,$data){
+    public function editFilier($data){
         try{
             $sql="UPDATE  felier SET intitilue=:intitule,IDDept=:Dep,nbMax=:nbMax WHERE IDFelier=:id";
             $smt=$this->db->prepare($sql);
             $smt->bindParam(':intitule',$data['label']);
             $smt->bindParam(':Dep',$data['departement'],PDO::PARAM_INT);
             $smt->bindParam(':nbMax',$data['NB_MAX'],PDO::PARAM_INT);
-            $smt->bindParam(':id',$id,PDO::PARAM_INT);
+            $smt->bindParam(':id',$data['edit'],PDO::PARAM_INT);
             $smt->execute();
             return true;
             

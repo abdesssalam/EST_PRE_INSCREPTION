@@ -23,4 +23,9 @@ if(isset($_GET['list_pr_filier'])){
     }
     echo json_encode($res);
 }
+if(isset($_GET['list_att_filier'])){
+    $res = $phase->get_list_att($_GET['list_att_filier']);
+    
+    echo json_encode($res);
+}
 ?>

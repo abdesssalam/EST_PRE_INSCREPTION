@@ -276,6 +276,25 @@
             }
         }
 
+
+
+        public function set_etd_admis($et,$fl){
+            try{
+            $sql = "update insception set admis=1 where IDEtidiant=:E and IDFelier=:F";
+            $stmt = $this->db->prepare($sql);
+                $stmt->bindParam(":E", $et, PDO::PARAM_INT);
+                $stmt->bindParam(":F", $fl, PDO::PARAM_INT);
+                $stmt->execute();
+                return true;
+            }catch (PDOException $e) {
+                
+                echo $e->getMessage();
+                echo $e->getLine();
+                return false;
+                
+            }
+        }
+
        
 
         
