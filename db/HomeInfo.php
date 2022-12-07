@@ -102,6 +102,21 @@ class HomeInfo{
         }
    }
 
+   public function get_statistics(){
+    try{
+        $sql = "SELECT intitilue,COUNT(*) as NBR FROM felier as f JOIN  insception as ic on f.IDFelier=ic.IDFelier GROUP by intitilue";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        return $result; 
+    }catch (PDOException $e) {
+        echo $e->getMessage();
+        echo $e->getLine();
+        return false;
+    }
+       
+   }
+
     
 
 

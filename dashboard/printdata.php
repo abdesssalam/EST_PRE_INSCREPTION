@@ -7,7 +7,7 @@ if(isset($_POST['print'])){
     $name;
     if($_POST['liste']=='attend'){
         $liste = $phase->get_list_att($fl);
-        $name = 'list_attende_' . str_replace(' ', '_', $liste[0]['felier']).getdate()['mday'].'_'.getdate()['mon'].'_'.getdate()['year']; 
+        $name = 'list_attende_' . str_replace(' ', '_', $liste[0]['felier']).'_'.getdate()['mday'].'_'.getdate()['mon'].'_'.getdate()['year']; 
     }else{
         $liste = $phase->get_list_principale($fl);
         //foreach update insception 
@@ -19,7 +19,7 @@ if(isset($_POST['print'])){
             unset($liste[$i]['IDFelier']);
             unset($liste[$i]['IDEtudiant']);
         }
-        $name = 'list_principale_' . str_replace(' ', '_', $liste[0]['felier']).getdate()['mday'].'_'.getdate()['mon'].'_'.getdate()['year']; 
+        $name = 'list_principale_' . str_replace(' ', '_', $liste[0]['felier']).'_'.getdate()['mday'].'_'.getdate()['mon'].'_'.getdate()['year']; 
     }
    
     

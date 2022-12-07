@@ -14,14 +14,9 @@ class Auth{
     //  login
      public function login($data){
         try{
-
-            //print_r($data);
-           $sql="select idUser,role,password from utilisateur where email=?";
-            //$sql="select idUser,nom,prenom,role from utilisateur where email='jeck9922@unip.edu.pl' and password='123'";
+            $sql="select idUser,role,password from utilisateur where email=?";
             $stm=$this->db->prepare($sql);
-
             $stm->bindValue(1,$data['email'],PDO::PARAM_STR);
-        
             $stm->execute();
             $result=$stm->fetch();
             if($result){
@@ -29,16 +24,7 @@ class Auth{
                 $user = array("idUser" => $result['idUser'],"role"=>$result['role']);
                  return $user;
             }
-            }else{
-                echo "non";
             }
-            
-
-           
-            // if($result){
-            //     return $result;
-            // }
-            // return false;
             
         } catch (PDOException $e) {
                 echo $e->getMessage().'<br>';
@@ -51,7 +37,6 @@ class Auth{
      public function getUser($id){
         try{
             $sql="select nom,prenom from utilisateur where idUser=?";
-            //$sql="select idUser,nom,prenom,role from utilisateur where email='jeck9922@unip.edu.pl' and password='123'";
             $stm=$this->db->prepare($sql);
 
             $stm->bindValue(1,$id,PDO::PARAM_INT);
