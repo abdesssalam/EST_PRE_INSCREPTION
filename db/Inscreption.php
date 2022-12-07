@@ -261,7 +261,7 @@
         //show etudiant info
         public function showEtudiant($id){
             try{
-                $sql = "SELECT CNE,CIN,telephone,codePostal ,v.id as ville,v.region,b.annee ,b.region as RegBac, b.NoteNational,b.NoteRegional,b.moycc,b.type FROM etudiant as ed JOIN ville as v on ed.ville=v.id JOIN bac as b on b.IDEtudiant=ed.IDEtudiant WHERE ed.IDEtudiant=:ID";
+                $sql = "SELECT nbEdit,CNE,CIN,telephone,codePostal ,v.id as ville,v.region,b.annee ,b.region as RegBac, b.NoteNational,b.NoteRegional,b.moycc,b.type FROM etudiant as ed JOIN ville as v on ed.ville=v.id JOIN bac as b on b.IDEtudiant=ed.IDEtudiant WHERE ed.IDEtudiant=:ID";
                 $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(":ID", $id, PDO::PARAM_INT);
                 $stmt->execute();
