@@ -92,8 +92,8 @@ else:
             </div>
             
             <div class="md:w-1/4 w-full  flex items-center m-2  ">
-            <label for="codePostal" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 ">Code Postal :</label>
-                <input type="number" name="codePostal"  value="<?php echo isset($rowEtudian['codePostal']) ? $rowEtudian['codePostal'] : '' ?>" id="codePostal" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="50000" required>
+            <label for="dateNaiss" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 ">Code Postal :</label>
+                <input type="date" name="dateNaiss"  value="<?php echo isset($rowEtudian['dateNaiss']) ? $rowEtudian['dateNaiss'] : '' ?>" id="dateNaiss" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="50000" required>
             </div>
             <div class="md:w-1/4 w-full  flex items-center m-2 ">
                 <label for="telephone" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 ">telephone :</label>

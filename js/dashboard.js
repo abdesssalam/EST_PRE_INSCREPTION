@@ -50,6 +50,7 @@ $(document).ready(function(){
         
     })
     $('#liste_selected').change(function(){
+        console.log($('#liste_selected').val())
         var filier_dut=$('#phase_filier_DUT').val();
         var list_selected=$('#liste_selected').val();
 
@@ -83,7 +84,7 @@ $(document).ready(function(){
     function get_list_att(filier_dut){
         $.get("/ESTS-INS/json_data.php?list_att_filier="+filier_dut,function(data,st){
             data=JSON.parse(data);
-            
+            console.log(data);
             
             $('#tbody_list_phase').empty();
             data.forEach(function(dd){

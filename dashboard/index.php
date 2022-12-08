@@ -1,5 +1,5 @@
 <?php
-$title = "statistique";
+$title = "statistique et parammeters";
 require_once('header.php');
 
 $rows = $home_info->get_statistics();

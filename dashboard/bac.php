@@ -1,5 +1,5 @@
 <?php 
-$title = "géstion des phases";
+$title = "les type bac";
 require_once('header.php');
 $types_bac = $home_info->getTypeBac();
 $filiers = $felier->getAllFiliers();

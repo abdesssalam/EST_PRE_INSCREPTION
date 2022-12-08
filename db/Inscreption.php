@@ -19,14 +19,14 @@
                 // begin transact
                 $this->db->beginTransaction();
 
-                $sql="INSERT INTO etudiant(IDEtudiant,CNE,CIN,ville,telephone,codePostal) values(:ID,:CNE,:CIN,:V,:T,:N)";
+                $sql="INSERT INTO etudiant(IDEtudiant,CNE,CIN,ville,telephone,dateNaiss) values(:ID,:CNE,:CIN,:V,:T,:N)";
                 $stmt=$this->db->prepare($sql);
                 $stmt->bindParam(':ID',$ID,PDO::PARAM_INT);
                 $stmt->bindParam(':CNE',$data['CNE'],PDO::PARAM_STR);
                 $stmt->bindParam(':CIN',$data['CIN'],PDO::PARAM_STR);
                 $stmt->bindParam(':V',$data['ville'],PDO::PARAM_INT);
                 $stmt->bindParam(':T',$data['telephone'],PDO::PARAM_STR);
-                $stmt->bindParam(':N',$data['codePostal'],PDO::PARAM_STR);
+                $stmt->bindParam(':N',$data['dateNaiss'],PDO::PARAM_STR);
                 
                 $stmt->execute();
 
@@ -84,14 +84,14 @@
             try{
                 $this->db->beginTransaction();
                 //table : etudiant
-                $sql = "UPDATE etudiant SET CNE=:CNE,CIN=:CIN,telephone=:T,ville=:V,codePostal=:N WHERE IDEtudiant=:ID";
+                $sql = "UPDATE etudiant SET nbEdit=nbEdit+1, CNE=:CNE,CIN=:CIN,telephone=:T,ville=:V,dateNaiss=:N WHERE IDEtudiant=:ID";
                 $stmt=$this->db->prepare($sql);
                 $stmt->bindParam(':ID',$ID,PDO::PARAM_INT);
                 $stmt->bindParam(':CNE',$data['CNE'],PDO::PARAM_STR);
                 $stmt->bindParam(':CIN',$data['CIN'],PDO::PARAM_STR);
                 $stmt->bindParam(':V',$data['ville'],PDO::PARAM_INT);
                 $stmt->bindParam(':T',$data['telephone'],PDO::PARAM_STR);
-                $stmt->bindParam(':N',$data['codePostal'],PDO::PARAM_STR);
+                $stmt->bindParam(':N',$data['dateNaiss'],PDO::PARAM_STR);
                 $stmt->execute();
 
                 //table : bac
@@ -261,7 +261,7 @@
         //show etudiant info
         public function showEtudiant($id){
             try{
-                $sql = "SELECT nbEdit,CNE,CIN,telephone,codePostal ,v.id as ville,v.region,b.annee ,b.region as RegBac, b.NoteNational,b.NoteRegional,b.moycc,b.type FROM etudiant as ed JOIN ville as v on ed.ville=v.id JOIN bac as b on b.IDEtudiant=ed.IDEtudiant WHERE ed.IDEtudiant=:ID";
+                $sql = "SELECT nbEdit,CNE,CIN,telephone,dateNaiss ,v.id as ville,v.region,b.annee ,b.region as RegBac, b.NoteNational,b.NoteRegional,b.moycc,b.type FROM etudiant as ed JOIN ville as v on ed.ville=v.id JOIN bac as b on b.IDEtudiant=ed.IDEtudiant WHERE ed.IDEtudiant=:ID";
                 $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(":ID", $id, PDO::PARAM_INT);
                 $stmt->execute();
