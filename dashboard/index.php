@@ -21,7 +21,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
             <div class="bg-blue-600  flex justify-between items-center py-2 px-4 m-2">
                 <i class="fa-solid fa-graduation-cap text-white text-2xl mx-2"></i>
                 <div class="text-white uppercase">
-                    <h3><?php echo  $row['intitilue'] ?></h3>
+                    <h3 class="font-semibold text-lg text-green-400"><?php echo  $row['intitilue'] ?></h3>
                     <h4><?php echo $row['NBR'] ?> <span>inscreption</span> </h4>   
                 </div>
                 
@@ -34,9 +34,9 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
             <form action="" method="post" class="w-full flex flex-col items-center">
                 <?php foreach($settings as $st): ?>
                     <div class="my-2 flex content-around focus:outline-none w-full">
-                        <label class="font-medium text-lg capitalize  w-1/3" for=""><?php echo $st['label'] ?></label>
+                        <label class="font-medium text-lg capitalize  w-2/5" for=""><?php echo $st['label'] ?></label>
                         
-                        <input class="p-1 rounded-sm w-2/3" value="<?php echo $st['val'] ?>" type="<?php echo $st['type'] ?>" name="<?php echo $st['s_key'] ?>"  >
+                        <input class="p-1 rounded-sm w-3/5" value="<?php echo $st['val'] ?>" type="<?php echo $st['type'] ?>" name="<?php echo $st['s_key'] ?>"  >
                         
                     </div>
                 <?php endforeach; ?>    

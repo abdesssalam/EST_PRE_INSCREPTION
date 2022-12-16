@@ -34,11 +34,11 @@ else:
 <div class="flex mb-4 w-full">
     <div class="w-1/2 mr-1">
         <label class="block text-grey-darker text-sm font-medium mb-2" for="first_name">Prenom</label>
-        <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="prenom" id="first_name" type="text" placeholder="Votre prenom">
+        <input required class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="prenom" id="first_name" type="text" placeholder="Votre prenom">
     </div>
     <div class="w-1/2 ml-1">
         <label class="block text-grey-darker text-sm font-medium mb-2" for="last_name">Nom</label>
-         <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="nom" id="last_name" type="text" placeholder="Votre nom">
+         <input required class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="nom" id="last_name" type="text" placeholder="Votre nom">
     </div>
     </div>
   <div class="mb-2">

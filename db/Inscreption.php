@@ -16,6 +16,24 @@
         
         public function add($data,$ID){
             try{
+                if($data['CNE']=="" || $data['CIN']=="" ||$data['ville']=="" ||$data['telephone']=="" ||$data['dateNaiss']==""  ){
+                    echo '<div class="p-4 mb-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+                    <span class="font-medium">Saisir votre information personnel S.V.P!</span> 
+                        </div>';
+                    return false;
+                }
+                if($data['CC']=="" || $data['regional']=="" ||$data['national']=="" || $data['region_bac']=="" || $data['annee_bac']=="" ||$data['type_bac']==""  ||$data['dateNaiss']==""  ){
+                    echo '<div class="p-4 mb-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+                    <span class="font-medium">Saisir votre information de bac S.V.P!</span> 
+                        </div>';
+                    return false;
+                }
+                if($data['choix1']==""){
+                    echo '<div class="p-4 mb-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+                    <span class="font-medium">choix 1 est obligatoire!</span> 
+                        </div>';
+                    return false;
+                }
                 // begin transact
                 $this->db->beginTransaction();
 
@@ -47,13 +65,16 @@
                 $stmt->bindParam(':ID',$ID,PDO::PARAM_INT);
                 $stmt->bindParam(':F',$data['choix1'],PDO::PARAM_INT);
                 $stmt->execute();
-                $sql="INSERT INTO insception(IDEtidiant,IDFelier,choix) values (:ID,:F,2)";
-                $stmt=$this->db->prepare($sql);
-                $stmt->bindParam(':ID',$ID,PDO::PARAM_INT);
-                $stmt->bindParam(':F',$data['choix2'],PDO::PARAM_INT);
-                $stmt->execute();
+                if($data['choix2']!=""){
+                    $sql="INSERT INTO insception(IDEtidiant,IDFelier,choix) values (:ID,:F,2)";
+                    $stmt=$this->db->prepare($sql);
+                    $stmt->bindParam(':ID',$ID,PDO::PARAM_INT);
+                    $stmt->bindParam(':F',$data['choix2'],PDO::PARAM_INT);
+                    $stmt->execute();
+                }
+                
                 // commit transact
-                /*
+                
                     if($this->addFile('File_R','regional',$data['CNE'])==false){
                         $this->db->rollBack();
                         return false;
@@ -67,7 +88,7 @@
                         return false;
                     }
                     
-                */
+               
                 $this->db->commit();
                 return true;
             
@@ -81,6 +102,24 @@
         }
 
         public function editInscreption($ID,$data){
+            if($data['CNE']=="" || $data['CIN']=="" ||$data['ville']=="" ||$data['telephone']=="" ||$data['dateNaiss']==""  ){
+                echo '<div class="p-4 mb-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+                <span class="font-medium">Saisir votre information personnel S.V.P!</span> 
+                    </div>';
+                return false;
+            }
+            if($data['CC']=="" || $data['regional']=="" ||$data['national']=="" || $data['region_bac']=="" || $data['annee_bac']=="" ||$data['type_bac']==""  ||$data['dateNaiss']==""  ){
+                echo '<div class="p-4 mb-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+                <span class="font-medium">Saisir votre information de bac S.V.P!</span> 
+                    </div>';
+                return false;
+            }
+            if($data['choix1']==""){
+                echo '<div class="p-4 mb-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+                <span class="font-medium">choix 1 est obligatoire!</span> 
+                    </div>';
+                return false;
+            }
             try{
                 $this->db->beginTransaction();
                 //table : etudiant
@@ -109,9 +148,13 @@
                 //les choix
                 $etd_choix = $this->showChoix($_SESSION['ID']);
                 if($etd_choix[0]['IDFelier']!=$data['choix1']){
-                    if($etd_choix[1]['IDFelier']==$data['choix2'] && $data['choix1']==$data['choix12']){
-                        echo "les choix doit être different";
+                   
+                    if(isset($etd_choix[1]) && ($etd_choix[1]['IDFelier']==$data['choix2'] || $data['choix1']==$data['choix2'] || $etd_choix[0]['IDFelier']==$data['choix2'] || $etd_choix[1]['IDFelier']==$data['choix1'] )){
+                        echo '<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                        <span class="font-medium">les choix doit être different</span> 
+                      </div>' ;
                         $this->db->rollBack();
+                        return false;
 
                     }else{
                         $sql = " UPDATE insception set IDFelier=:F where IDEtidiant=:ID and choix=1";
@@ -122,30 +165,71 @@
                     }
                     
                 }
-                if($etd_choix[1]['IDFelier']!=$data['choix2']){
-                    if($etd_choix[0]['IDFelier']==$data['choix1'] && $data['choix1']==$data['choix12']){
-                        echo "les choix doit être different";
-                        $this->db->rollBack();
+                 $inIns = $this->showNbIscription($ID);
+               
+                if($data['choix2']!=""){
+                   if($inIns['NBINS']==2){
+                        
+                        if($etd_choix[1]['IDFelier']!=$data['choix2'] && $etd_choix[0]['IDFelier']==$data['choix1'] && $data['choix1']==$data['choix2']){
+                            echo '<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                            <span class="font-medium">les choix doit être different</span> 
+                          </div>' ;
+                            $this->db->rollBack();
+                            return false;
 
-                    }else{
-                        $sql = " UPDATE insception set IDFelier=:F where IDEtidiant=:ID and choix=1";
-                        $stmt=$this->db->prepare($sql);
+
+                        }else{
+                            $sql = " UPDATE insception set IDFelier=:F where IDEtidiant=:ID and choix=2";
+                            $stmt=$this->db->prepare($sql);
                         $stmt->bindParam(':ID',$ID,PDO::PARAM_INT);
                         $stmt->bindParam(':F',$data['choix2'],PDO::PARAM_INT);
-                        $stmt->execute();
-                    }
+                        $stmt->execute(); 
+                        }
                     
+                    }else{
+
+                    
+                        if ($etd_choix[0]['IDFelier'] == $data['choix1'] && $data['choix1'] == $data['choix2']) {
+                            echo '<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                            <span class="font-medium">les choix doit être different</span> 
+                        </div>' ;
+                            $this->db->rollBack();
+                            return false;
+                        }else{
+
+                        
+                            $sql="INSERT INTO insception(IDEtidiant,IDFelier,choix) values (:ID,:F,2)";
+                            $stmt=$this->db->prepare($sql);
+                            $stmt->bindParam(':ID',$ID,PDO::PARAM_INT);
+                            $stmt->bindParam(':F',$data['choix2'],PDO::PARAM_INT);
+                            $stmt->execute();
+                        }
+                     }
                 }
+                
                 
                 $this->db->commit();
                 return true;
             }catch (PDOException $e) {
-                $this->db->rollBack();
+                
                 echo $e->getMessage();
                 echo $e->getLine();
                 return false;
             }
             
+        }
+        public function showNbIscription($id){
+            try{
+            $sql = "SELECT COUNT(*) as NBINS FROM insception WHERE IDEtidiant=:ID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(":ID", $id);
+            $stmt->execute();
+            return  $stmt->fetch();
+            }catch (PDOException $e) {
+                echo $e->getMessage();
+                echo $e->getLine();
+                return false;
+            }
         }
 
         public function show($id){
@@ -228,21 +312,31 @@
                 // echo "File is an image - " . $check["mime"] . ".";
                 $uploadOk = 1;
             } else {
-                echo "File is not an image.";
+                echo '<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                            <span class="font-medium">fichier n\'pas une image</span> 
+                          </div>' ;
                 $uploadOk = 0;
                 
             }
             if($_FILES[$file]["size"] > 500000) {
-                echo "Sorry, your file is too large.";
+                echo '<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                <span class="font-medium">fichier doit être < 5MB</span> 
+              </div>' ;
                 $uploadOk = 0;
             }
             if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-                echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                echo '<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                            <span class="font-medium">soulement JPG, JPEG, PNG & GIF autoresé</span> 
+                          </div>' ;
+
                 $uploadOk = 0;
             }
 
             if($uploadOk == 0) {
-                echo "Sorry, your file was not uploaded.";
+                echo '<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                            <span class="font-medium">votre file n\'est pas chargé</span> 
+                          </div>' ;
+              
                 return false;
                 // if everything is ok, try to upload file
             }else {
@@ -250,7 +344,10 @@
                     // echo "ok";
                     return true;
                 } else {
-                    echo "Sorry, there was an error uploading your file.";
+                    echo '<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                    <span class="font-medium">votre file n\'est pas chargé</span> 
+                  </div>' ;
+                
                     return false;
                 }
         

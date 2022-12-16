@@ -56,17 +56,19 @@ else{
                 <i class="fa-solid fa-table-list text-3xl mx-3"></i>
                 <a class="w-full" href="/ESTS-INS/dashboard/inscreptions.php">les inscreption</a>
             </li>
-            <li class="flex w-11/12 bg-green-500 py-2 my-1 items-center hover:bg-green-700">
-                <i class="fa-solid fa-hourglass-end text-3xl mx-3"></i>
-                <a class="w-full" href="/ESTS-INS/dashboard/phases.php">les phases</a> 
+           <li class="flex w-11/12 bg-green-500 py-2 my-1 items-center hover:bg-green-700">
+                <i class="fa-solid fa-graduation-cap text-3xl mx-3"></i>
+                <a class="w-full" href="/ESTS-INS/dashboard/filiers.php">les filiers DUT</a> 
             </li>
             <li class="flex w-11/12 bg-green-500 py-2 my-1 items-center hover:bg-green-700">
                 <i class="fa-solid fa-graduation-cap text-3xl mx-3"></i>
                 <a class="w-full" href="/ESTS-INS/dashboard/bac.php">les filiers de bac</a> 
             </li>
-            <li class="flex w-11/12 bg-green-500 py-2 my-1 items-center hover:bg-green-700">
-                <i class="fa-solid fa-graduation-cap text-3xl mx-3"></i>
-                <a class="w-full" href="/ESTS-INS/dashboard/filiers.php">les filiers DUT</a> 
+            
+
+             <li class="flex w-11/12 bg-green-500 py-2 my-1 items-center hover:bg-green-700">
+                <i class="fa-solid fa-hourglass-end text-3xl mx-3"></i>
+                <a class="w-full" href="/ESTS-INS/dashboard/phases.php">les phases</a> 
             </li>
             <li class="flex w-11/12 bg-green-500 py-2 my-1 items-center hover:bg-green-700">
                 <i class="fa-solid fa-building text-3xl mx-3"></i>

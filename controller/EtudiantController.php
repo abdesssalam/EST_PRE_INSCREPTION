@@ -17,7 +17,11 @@ if(isset($_SESSION['ID'])){
     }
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if($action=="ADD"){
-          $inscreption->add($_POST, $_SESSION['ID']);  
+          if($inscreption->add($_POST, $_SESSION['ID'])){
+            echo'<div class="p-4 mb-4 text-center text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">
+                        <span class="font-medium">merci pour votre inscription!</span> 
+                    </div>';
+          }  
         }
         if($action=="EDIT"){
             if($inscreption->editInscreption($_SESSION['ID'], $_POST)){
@@ -37,6 +41,11 @@ $villes = $home_info->getVilles();
 $regions = $home_info->getRegions();
 $typebac = $home_info->getTypeBac();
 $feliers = $felier->getAllFiliers();
+
+if(isset($rowEtudian['type'])){
+    $feliers = $felier->filter_choix_by_bac($rowEtudian['type']);
+   
+}
 
 
 

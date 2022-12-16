@@ -28,4 +28,9 @@ if(isset($_GET['list_att_filier'])){
     
     echo json_encode($res);
 }
+
+// used to filter list des choix depend on type de bac
+if(isset($_GET['choix_by_bac'])){
+    echo json_encode($felier->filter_choix_by_bac($_GET['choix_by_bac']));
+}
 ?>

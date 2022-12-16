@@ -52,6 +52,18 @@ class Auth{
      }
     //  add utilisateur
     public function addUtilisateur($data) {
+        if($data['nom']=="" || $data['prenom']=="" || $data['email']=="" || $data['sexe']=="" || $data['password']=="" ){
+            echo '<div class="p-4 mb-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+                <span class="font-medium">Saisir votre information personnel S.V.P!</span> 
+                    </div>';
+                return false;
+        }
+        if($data['password']!=$data['password_conf']){
+            echo '<div class="p-4 mb-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+            <span class="font-medium">mot de pass pas les même</span> 
+                </div>';
+            return false;
+        }
         try {
             $role=1;
             $pass = password_hash($data['password'], PASSWORD_DEFAULT);
@@ -86,12 +98,12 @@ class Auth{
               $sql = "UPDATE `Utilisateur` SET `nom`=:nom,`prenom`=:prenom,`email`=:email,`password`=:password,`telephone`=:telephone WHERE idUser = :id ";
               $stmt = $this->db->prepare($sql);
             
-              $stmt->bindparam(':id',  $data['id']);
-              $stmt->bindparam(':nom',  $data['nom']);
-              $stmt->bindparam(':prenom',  $data['prenom']);
-              $stmt->bindparam(':email',  $data['email']);
-              $stmt->bindparam(':password',  $data['password']);
-              $stmt->bindparam(':telephone',  $data['telephone']);
+              $stmt->bindparam(':id',  $data['id'],PDO::PARAM_INT);
+              $stmt->bindparam(':nom',  $data['nom'],PDO::PARAM_STR);
+              $stmt->bindparam(':prenom',  $data['prenom'],PDO::PARAM_STR);
+              $stmt->bindparam(':email',  $data['email'],PDO::PARAM_STR);
+              $stmt->bindparam(':password',  $data['password'],PDO::PARAM_STR);
+              $stmt->bindparam(':telephone',  $data['telephone'],PDO::PARAM_STR);
               
               // execute statement
               $stmt->execute();
@@ -102,16 +114,30 @@ class Auth{
           }
       }
 
-      public function get_comptes_non_inscrire(){
+      public function get_comptes_non_inscrire($nb){
         try{
-            $sql = "SELECT idUser,nom,prenom,email,created FROM utilisateur WHERE role=1 and DATEDIFF(CURRENT_DATE(), created)>7 and idUser not in (SELECT IDEtudiant FROM etudiant) ORDER by created ASC ";
+            $sql = "SELECT idUser,nom,prenom,email,created FROM utilisateur WHERE role=1 and DATEDIFF(CURRENT_DATE(), created)>:NB and idUser not in (SELECT IDEtudiant FROM etudiant) ORDER by created ASC ";
             $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':NB',  $nb,PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll();
         }catch (PDOException $e) {
               echo $e->getMessage();
               return false;
           }
+      }
+
+      public function delete_user($ID){
+        try{
+            $sql = "DELETE FROM utilisateur where idUser=:ID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':ID',  $ID,PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
       }
 
 

@@ -1,14 +1,25 @@
 <?php 
 $title = "les comptes non inscrire";
 require_once('header.php');
-$rows = $auth->get_comptes_non_inscrire();;
+$settings = $home_info->get_setting_value('nbj_cmpt');
+$rows = $auth->get_comptes_non_inscrire($settings['val']);
+
+if(isset($_GET['delete'])){
+    if($auth->delete_user($_GET['delete'])){
+        echo '<div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">
+        <span class="font-medium">utilisateur a été suprimée!</span> 
+      </div>';
+      header("location:contacts.php");
+    }
+}
+
 ?>
 <!-- conent -->
    <div class="w-11/12 mx-auto py-2">
       <h3 class="text-center font-bold text-xl capitalize">liste des comptes non inscrire</h3>
       <div class="overflow-x-auto  overflow-y-scroll relative mt-4" style="height: 450px ;">
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <table class="w-full text-sm text-left text-gray-500 ">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50  ">
             <tr>
                 <th scope="col" class="py-3 px-6">
                     Full name

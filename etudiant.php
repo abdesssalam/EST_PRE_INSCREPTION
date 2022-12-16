@@ -4,7 +4,7 @@ include_once ('db/conn.php');
 include_once 'controller/EtudiantController.php';
 
 $current =getdate()['year'];
-$next = $current + 1;
+$next = $current - 1;
 
  ?>
 <!DOCTYPE html>
@@ -64,7 +64,7 @@ else:
            <div class="md:w-1/4 w-full  flex items-center m-2  ">
                 <label for="region" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">Payee :</label>
                 <!-- TODO:  traitemnet for dynamique -->
-                <select id="region-etd"  name="region"  value="<?php echo isset($rowEtudian['region']) ? $rowEtudian['region'] : '' ?>" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
+                <select required id="region-etd"  name="region"  value="<?php echo isset($rowEtudian['region']) ? $rowEtudian['region'] : '' ?>" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
                      <option >choisez votre region</option>
                     <?php foreach($regions as $region): ?>
                         <?php if(isset($rowEtudian['region']) && $rowEtudian['region']==$region['id'] ): ?>
@@ -78,7 +78,7 @@ else:
             </div>
            <div class="md:w-1/4 w-full  flex items-center m-2  ">
                 <label for="ville" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">Ville :</label>
-                <select id="ville-etd" name="ville"   class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
+                <select required id="ville-etd" name="ville"   class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
                     <option selected>choisez votre ville</option>
                     <?php foreach($villes as $ville): ?>
                         <?php if(isset($rowEtudian['ville']) && $ville['id']==$rowEtudian['ville']): ?>
@@ -92,7 +92,7 @@ else:
             </div>
             
             <div class="md:w-1/4 w-full  flex items-center m-2  ">
-            <label for="dateNaiss" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 ">Code Postal :</label>
+            <label for="dateNaiss" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 ">Dade de naissance :</label>
                 <input type="date" name="dateNaiss"  value="<?php echo isset($rowEtudian['dateNaiss']) ? $rowEtudian['dateNaiss'] : '' ?>" id="dateNaiss" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="50000" required>
             </div>
             <div class="md:w-1/4 w-full  flex items-center m-2 ">
@@ -112,7 +112,7 @@ else:
                 
                 <div class="md:w-1/4 w-full  flex items-center m-2  ">
                     <label for="typeBac" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">Type de Bac :</label>
-                    <select id="typeBac" name="type_bac"  value="<?php echo isset($rowEtudian['CNE']) ? $rowEtudian['CNE'] : '' ?>" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
+                    <select required id="typeBac" name="type_bac"  value="<?php echo isset($rowEtudian['CNE']) ? $rowEtudian['CNE'] : '' ?>" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
                         <option>choisez votre type de Bac</option>
                         <!-- TODO : dynamique -->
                         <?php foreach($typebac as $tbac): ?>
@@ -127,7 +127,7 @@ else:
                 </div>
                 <div class="md:w-1/4 w-full  flex items-center m-2  ">
                     <label for="RegBac" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">Region de Bac :</label>
-                    <select id="RegBac" name="region_bac"  value="<?php echo isset($rowEtudian['CNE']) ? $rowEtudian['CNE'] : '' ?>" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
+                    <select required id="RegBac" name="region_bac"  value="<?php echo isset($rowEtudian['CNE']) ? $rowEtudian['CNE'] : '' ?>" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
                         <option selected>choisez Region de Bac</option>
                         <?php foreach($regions as $region): ?>
                             <?php if(isset($rowEtudian['RegBac']) && $rowEtudian['RegBac']==$region['id'] ): ?>
@@ -141,26 +141,39 @@ else:
                 </div>
                 <div class="md:w-1/4 w-full  flex items-center m-2  ">
                     <label for="AnneeBac" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">Annee de Bac :</label>
-                    <select id="AnneeBac" name="annee_bac"  value="" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
+                    <select required id="AnneeBac" name="annee_bac"  value="" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
                         <option >choisez l'annee de Bac</option>
+                        <?php
+                        if(isset($rowEtudian['annee'])){
+                            if($current==$rowEtudian['annee']){
+                                echo '<option selected value="'.$current.'">'.$current.' </option>';
+                                echo '<option  value="'.$next.'">'.$next.' </option>';
+                            }else{
+                                echo '<option selected value="'.$next.'">'.$next.' </option>';
+                                echo '<option  value="'.$current.'">'.$current.' </option>';
+                            }
+                        }else{
+                            echo '<option  value="'.$next.'">'.$next.' </option>';
+                            echo '<option  value="'.$current.'">'.$current.' </option>';
+                        }
+                        ?>
                         
-                        <option value="<?php echo $current ?>"><?php echo $current ?></option>
-                        <option value="<?php echo $next ?>"><?php echo $next ?></option>
+            
                         
                         
                     </select>
                 </div>
                 <div class="md:w-1/4 w-full  flex items-center m-2 ">
                     <label for="national" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">moyenne de l'examen national :</label>
-                    <input type="number"  value="<?php echo isset($rowEtudian['NoteNational']) ? $rowEtudian['NoteNational'] : '' ?>" step="0.01" min="0" max="20" name="national" id="national" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="XX.XX" required>
+                    <input  type="number"  value="<?php echo isset($rowEtudian['NoteNational']) ? $rowEtudian['NoteNational'] : '' ?>" step="0.01" min="0" max="20" name="national" id="national" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="XX.XX" required>
                 </div>
                 <div     class="md:w-1/4 w-full  flex items-center m-2 ">
                     <label for="regional" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">moyenne de l'examen regional :</label>
-                    <input type="number"  value="<?php echo isset($rowEtudian['NoteRegional']) ? $rowEtudian['NoteRegional'] : '' ?>" step="0.01" min="0" max="20" name="regional" id="regional" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="XX.XX" required>
+                    <input  type="number"  value="<?php echo isset($rowEtudian['NoteRegional']) ? $rowEtudian['NoteRegional'] : '' ?>" step="0.01" min="0" max="20" name="regional" id="regional" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="XX.XX" required>
                 </div>
                 <div class="md:w-1/4 w-full  flex items-center m-2 ">
                     <label for="cc" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">moyenne des controls continue :</label>
-                    <input type="number"   value="<?php echo isset($rowEtudian['moycc']) ? $rowEtudian['moycc'] : '' ?>" step="0.01" min="0" max="20" name="CC" id="cc" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="XX.XX" required>
+                    <input  type="number"   value="<?php echo isset($rowEtudian['moycc']) ? $rowEtudian['moycc'] : '' ?>" step="0.01" min="0" max="20" name="CC" id="cc" class=" w-2/3 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="XX.XX" required>
                 </div>
         </div>
       
@@ -187,8 +200,8 @@ else:
             <div class="flex flex-wrap  w-full md:justify-start lg:justify-center items-start ">
                 
                 <div class="md:w-1/4 w-full  flex items-center m-2  ">
-                    <label for="choix1" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">choix 2:</label>
-                    <select id="choix1" name="choix1" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
+                    <label for="choix1" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">choix 1:</label>
+                    <select required id="choix1" name="choix1" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
                         <option>liste des choix</option>
                         <?php foreach($feliers as $fl): 
                              if(isset($etd_choix[0])){
@@ -204,7 +217,7 @@ else:
                     </select>
                 </div>
                 <div class="md:w-1/4 w-full  flex items-center m-2  ">
-                    <label for="choix2" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">choix 1:</label>
+                    <label for="choix2" class=" w-1/3 block mx-2 text-sm font-medium text-gray-900 dark:text-white">choix 2:</label>
                     <select id="choix2" name="choix2" class="w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
                         <option >liste des choix</option>
                         <?php foreach($feliers as $fl): 
@@ -239,7 +252,7 @@ else:
                 
             }
              }else{
-                    echo '<button disabled type="submit" class="text-white md:w-1/3 w-full my-3 uppercase mx-auto bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   ">valider votre inscreption</button>';
+                    echo '<button  type="submit" class="text-white md:w-1/3 w-full my-3 uppercase mx-auto bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   ">valider votre inscreption</button>';
              } ?>
        
         </div>

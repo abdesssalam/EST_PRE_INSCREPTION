@@ -17,13 +17,22 @@ $listFilier = $felier->getAllFiliers();
 
 //add filier to database
 if($_SERVER['REQUEST_METHOD']=="POST"){
-   if(isset($_POST['action'])){
+   if(isset($_POST['update'])){
       if($felier->editFilier($_POST)){
          echo '<div class="p-4 mb-4 w-2/3 mx-auto text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">
        <span class="font-medium">filier a été bien modifer!</span> 
      </div>';
       }
-   }else{
+   }
+   if(isset($_POST['delete'])){
+      if($felier->deleteFilier($_POST)){
+         echo '<div class="p-4 mb-4 w-2/3 mx-auto text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">
+       <span class="font-medium">filier a été bien suprimer!</span> 
+     </div>';
+      }
+   }
+   
+  if(isset($_POST['add'])){
 
    
    if($felier->addFilier($_POST)){
@@ -92,11 +101,15 @@ if(isset($_GET['edit'])){
         </div>
         <div class="w-9 mx-auto">
          <?php if(isset($_GET['edit'])): ?>
-            <input type="hidden" name="action" value="edit">
+            <!-- <input type="hidden" name="action" value="edit"> -->
             <input type="hidden" name="edit" value="<?php echo $_GET['edit'] ?>">
-            <input class="text-white bg-green-500 py-2 px-3 font-semibold my-2 cursor-pointer rounded-md uppercase hover:text-gray-600" type="submit" value="modifier">
+            <div class="w-1/2 flex justify-between">
+               <input class="text-white bg-blue-500 py-2 px-3 font-semibold m-2 cursor-pointer rounded-md uppercase hover:text-gray-600" type="submit" value="modifier" name="update">
+               <input class="text-white bg-red-500 py-2 px-3 font-semibold m-2 cursor-pointer rounded-md uppercase hover:text-gray-600" type="submit" value="suprimer" name="delete">
+            </div>
+           
          <?php else:?>   
-            <input class="text-white bg-green-500 py-2 px-3 font-semibold my-2 cursor-pointer rounded-md uppercase hover:text-gray-600" type="submit" value="ajouter">
+            <input class="text-white bg-green-500 py-2 px-3 font-semibold my-2 cursor-pointer rounded-md uppercase hover:text-gray-600" type="submit" value="ajouter" name="add">
          <?php endif;?>
          </div>
         
