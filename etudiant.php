@@ -41,7 +41,8 @@ $next = $current - 1;
 </header>
 <?php
 $today = date("Y-m-d");
-if($home_info->get_setting_value('date_limit_inscrp')<$today):
+$dateLimit = $home_info->get_setting_value('date_limit_inscrp')['val'];
+if($dateLimit<$today):
   echo '<div class="p-4 mb-4 text-sm text-yellow-500 text-center bg-yellow-200 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
   <span class="font-medium">les inscreptions sont fermer!</span> 
 </div>';
@@ -242,8 +243,8 @@ else:
         <?php
         
         if(isset($rowEtudian['nbEdit'])){
-            $nb = $home_info->get_setting_value('limit_edit');
-            if($rowEtudian['nbEdit']<2){
+            $nb = $home_info->get_setting_value('limit_edit')['val'];
+            if($rowEtudian['nbEdit']<$nb){
                 
                 echo '<button type="submit" class="text-white md:w-1/3 w-full my-3 uppercase mx-auto bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   ">modifier</button>'; 
                  
